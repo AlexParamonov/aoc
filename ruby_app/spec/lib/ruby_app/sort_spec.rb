@@ -3,9 +3,12 @@
 require "ruby_app/sort"
 
 RSpec.describe RubyApp::Sort do
-  let(:subject) { described_class }
+  let(:sorter) { described_class.new(input) }
 
-  it "sorts an array" do
-    expect(subject.new([3, 2, 1]).sort).to eq([1, 2, 3])
+  describe ".sort" do
+    let(:input) { [3, 2, 1] }
+    let(:subject) { sorter.sort }
+
+    it { is_expected.to eq([1, 2, 3]) }
   end
 end

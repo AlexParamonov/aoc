@@ -1,11 +1,12 @@
+require "forwardable"
+
 module RubyApp
   class Sort
+    extend Forwardable
+    def_delegator :array, :sort
+
     def initialize(array)
       @array = array
-    end
-
-    def sort
-      array.sort
     end
 
     private
