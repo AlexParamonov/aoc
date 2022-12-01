@@ -11,3 +11,4 @@ gem "rspec", "~> 3.0"
 
 gem "rubocop", "~> 1", group: %i[development test]
 gem "standard", group: %i[development test]
+gem "pry", group: %i[development test]

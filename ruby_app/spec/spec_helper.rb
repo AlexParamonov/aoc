@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "ruby_app"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -13,3 +14,5 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+$LOAD_PATH << File.expand_path("../lib/ruby_app", File.dirname(__FILE__))
