@@ -32,42 +32,23 @@ defmodule ElixirApp.ElfRockPaperScissors do
     |> Enum.sum()
   end
 
-  defp play_game({game_result, opponent_action} = game_entry) when game_result in [:win, :loose, :draw] do
-    shape = {pick_shape(game_entry), opponent_action}
-    {game_rules(shape), shape}
-  end
-
-  defp pick_shape({game_result, opponent_action}) do
-    case game_result do
-      :win -> winning_shape(opponent_action)
-      :loose -> loosing_shape(opponent_action)
-      :draw -> draw_shape(opponent_action)
-    end
-  end
-
-  def winning_shape(opponent_action) do
-    case opponent_action do
-      :rock -> :paper
-      :paper -> :scissors
-      :scissors -> :rock
-    end
-  end
-
-  def loosing_shape(opponent_action) do
-    case opponent_action do
-      :rock -> :scissors
-      :paper -> :rock
-      :scissors -> :paper
-    end
-  end
-
-  def draw_shape(opponent_action) do
-    opponent_action
-  end
+  defp play_game({:win, opponent_action}), do: play_game({winning_shape(opponent_action), opponent_action})
+  defp play_game({:loose, opponent_action}), do: play_game({loosing_shape(opponent_action), opponent_action})
+  defp play_game({:draw, opponent_action}), do: play_game({draw_shape(opponent_action), opponent_action})
 
   defp play_game(game_entry) do
     {game_rules(game_entry), game_entry}
   end
+
+  def winning_shape(:rock), do: :paper
+  def winning_shape(:paper), do: :scissors
+  def winning_shape(:scissors), do: :rock
+
+  def loosing_shape(:rock), do: :scissors
+  def loosing_shape(:paper), do: :rock
+  def loosing_shape(:scissors), do: :paper
+
+  def draw_shape(opponent_action), do: opponent_action
 
   defp game_rules(shape) do
     case shape do
