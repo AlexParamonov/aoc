@@ -5,7 +5,7 @@ defmodule ElixirApp.ElfStashTest do
   alias ElixirApp.FileFixtures
 
   setup_all do
-    stash = FileFixtures.content("1/demo_stash.txt")
+    stash = FileFixtures.content("01/demo_stash.txt")
     %{stash: stash}
   end
 

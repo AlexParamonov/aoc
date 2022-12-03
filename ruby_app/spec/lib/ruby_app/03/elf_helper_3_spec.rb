@@ -1,11 +1,11 @@
 require "support/spec_helpers/fixtures"
-require "3/elf_helper_3"
+require "03/elf_helper_3"
 
 RSpec.describe RubyApp::ElfHelper3 do
   include SpecHelpers::Fixtures
 
   let(:helper) { described_class.new(input) }
-  let(:input) { read_fixture("3/demo_backpacks.txt") }
+  let(:input) { read_fixture("03/demo_backpacks.txt") }
 
   describe ".find_duplicate_priorities_sum" do
     let(:subject) { helper.find_duplicate_priorities_sum }
@@ -20,7 +20,7 @@ RSpec.describe RubyApp::ElfHelper3 do
   end
 
   describe "solution" do
-    let(:input) { read_fixture("3/backpacks.txt") }
+    let(:input) { read_fixture("03/backpacks.txt") }
 
     describe ".find_duplicate_priorities_sum" do
       let(:subject) { helper.find_duplicate_priorities_sum }

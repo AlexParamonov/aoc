@@ -5,7 +5,7 @@ defmodule ElixirApp.ElfRockPaperScissorsTest do
   alias ElixirApp.FileFixtures
 
   setup_all do
-    game_log = FileFixtures.content("2/demo_game.txt")
+    game_log = FileFixtures.content("02/demo_game.txt")
     %{game_log: game_log}
   end
 
@@ -15,7 +15,7 @@ defmodule ElixirApp.ElfRockPaperScissorsTest do
     end
 
     test "returns input game result" do
-      game_log = FileFixtures.content("2/game_input.txt")
+      game_log = FileFixtures.content("02/game_input.txt")
       assert ElfRockPaperScissors.play(game_log, :player_action) == 14_375
     end
   end
@@ -26,7 +26,7 @@ defmodule ElixirApp.ElfRockPaperScissorsTest do
     end
 
     test "returns input game result" do
-      game_log = FileFixtures.content("2/game_input.txt")
+      game_log = FileFixtures.content("02/game_input.txt")
       assert ElfRockPaperScissors.play(game_log, :game_result) == 10_274
     end
   end

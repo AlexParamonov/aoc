@@ -1,5 +1,5 @@
 require "support/spec_helpers/fixtures"
-require "3/priority_evaluator"
+require "03/priority_evaluator"
 
 RSpec.describe RubyApp::PriorityEvaluator do
   include SpecHelpers::Fixtures

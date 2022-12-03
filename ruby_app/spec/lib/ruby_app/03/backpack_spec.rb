@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "support/spec_helpers/fixtures"
-require "3/backpack"
+require "03/backpack"
 
 RSpec.describe RubyApp::Backpack do
   include SpecHelpers::Fixtures

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require "support/spec_helpers/fixtures"
-require "1/elf_stash"
+require "01/elf_stash"
 
 RSpec.describe RubyApp::ElfStash do
   include SpecHelpers::Fixtures
 
   let(:stash) { described_class.new(input, group_size: 3) }
-  let(:input) { read_fixture("1/demo_stash.txt") }
+  let(:input) { read_fixture("01/demo_stash.txt") }
 
   describe ".top_carrier_calories" do
     let(:subject) { stash.top_carrier_calories }
@@ -34,7 +34,7 @@ RSpec.describe RubyApp::ElfStash do
   end
 
   describe "solution" do
-    let(:input) { read_fixture("1/stash.txt") }
+    let(:input) { read_fixture("01/stash.txt") }
 
     it "finds the top carrier" do
       expect(stash.top_carrier).to eq(189)
