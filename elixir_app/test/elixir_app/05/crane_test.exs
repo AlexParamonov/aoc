@@ -18,7 +18,7 @@ defmodule ElixirApp.CraneTest do
 
     test "executes a single instruction", %{pile: pile} do
       instructions = [
-        %{from: 1, to: 2, count: 2},
+        %{from: 1, to: 2, count: 2}
       ]
 
       assert Crane.sort(pile, with: instructions) == %{1 => [1], 2 => [3, 4, 5, 2]}
@@ -27,7 +27,7 @@ defmodule ElixirApp.CraneTest do
     test "executes a list of instructions", %{pile: pile} do
       instructions = [
         %{from: 1, to: 2, count: 2},
-        %{from: 2, to: 1, count: 1},
+        %{from: 2, to: 1, count: 1}
       ]
 
       assert Crane.sort(pile, with: instructions) == %{1 => [1, 2], 2 => [3, 4, 5]}
@@ -61,7 +61,7 @@ defmodule ElixirApp.CraneTest do
 
     test "executes a single instruction", %{pile: pile} do
       instructions = [
-        %{from: 1, to: 2, count: 2},
+        %{from: 1, to: 2, count: 2}
       ]
 
       assert Crane.sort(pile, with: instructions, using: :model_9001) == %{1 => [1], 2 => [3, 4, 2, 5]}
@@ -70,7 +70,7 @@ defmodule ElixirApp.CraneTest do
     test "executes a list of instructions", %{pile: pile} do
       instructions = [
         %{from: 1, to: 2, count: 2},
-        %{from: 2, to: 1, count: 1},
+        %{from: 2, to: 1, count: 1}
       ]
 
       assert Crane.sort(pile, with: instructions, using: :model_9001) == %{1 => [1, 5], 2 => [3, 4, 2]}

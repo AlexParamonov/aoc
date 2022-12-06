@@ -29,7 +29,7 @@ defmodule ElixirApp.Port do
 
   defp parse_instructions(raw_instructions) do
     raw_instructions
-    |> String.trim
+    |> String.trim()
     |> String.split("\n")
     |> Enum.map(fn instruction ->
       Regex.named_captures(~r/^move (?<count>\d+) from (?<from>\d+) to (?<to>\d+)$/, instruction)

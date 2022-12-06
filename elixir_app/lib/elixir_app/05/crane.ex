@@ -36,6 +36,6 @@ defmodule ElixirApp.Crane do
   defp pick_items(source_column, item_count, _crane_model) do
     source_column
     |> Enum.take(-item_count)
-    |> Enum.reverse
+    |> Enum.reverse()
   end
 end

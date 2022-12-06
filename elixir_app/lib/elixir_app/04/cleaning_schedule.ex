@@ -3,14 +3,14 @@ defmodule ElixirApp.CleaningSchedule do
     raw_schedule
     |> parse_schedule
     |> find_schedules_with_full_overlap
-    |> Enum.count
+    |> Enum.count()
   end
 
   def group_overlap_count(raw_schedule) do
     raw_schedule
     |> parse_schedule
     |> find_schedules_with_overlap
-    |> Enum.count
+    |> Enum.count()
   end
 
   defp find_schedules_with_overlap(schedule) do

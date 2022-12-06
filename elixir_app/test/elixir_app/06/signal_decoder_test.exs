@@ -8,7 +8,7 @@ defmodule ElixirApp.SignalDecoderTest do
       {"bvwbjplbgvbhsrlpgdmjqwftvncz", %{packet_start: 5, message_start: 23}},
       {"nppdvjthqldpwncqszvftbrmjlhg", %{packet_start: 6, message_start: 23}},
       {"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", %{packet_start: 10, message_start: 29}},
-      {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", %{packet_start: 11, message_start: 26}},
+      {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", %{packet_start: 11, message_start: 26}}
     ]
     |> Enum.each(fn {input, %{packet_start: packet_start, message_start: message_start}} ->
       test "finds the start of the packet for #{input}" do
