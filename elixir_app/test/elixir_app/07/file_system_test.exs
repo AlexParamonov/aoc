@@ -117,4 +117,77 @@ defmodule ElixirApp.FileSystemTest do
              ]
     end
   end
+
+  describe ".flatten" do
+    test "returns all dirs and files" do
+      assert %FileSystem.Dir{
+               name: "test_dir",
+               children: [
+                 %FileSystem.Dir{
+                   name: "a",
+                   children: [
+                     %FileSystem.File{name: "f", size: 29_116}
+                   ]
+                 },
+                 %FileSystem.File{name: "b.txt", size: 14_848_514},
+                 %FileSystem.Dir{
+                   name: "d",
+                   children: [
+                     %FileSystem.File{name: "j", size: 4_060_174}
+                   ]
+                 },
+                 %FileSystem.Dir{
+                   name: "empty",
+                   children: []
+                 }
+               ]
+             }
+             |> FileSystem.flatten()
+             |> Enum.map(& &1.name) == ["a", "f", "b.txt", "d", "j", "empty"]
+    end
+  end
+
+  describe ".filter_dir" do
+    test "returns only dirs" do
+      assert %FileSystem.Dir{
+               name: "test_dir",
+               children: [
+                 %FileSystem.Dir{
+                   name: "a",
+                   children: [
+                     %FileSystem.File{name: "f", size: 29_116}
+                   ]
+                 },
+                 %FileSystem.File{name: "b.txt", size: 14_848_514},
+                 %FileSystem.Dir{name: "empty", children: []}
+               ]
+             }
+             |> FileSystem.filter_dir()
+             |> Enum.map(& &1.name) == ["a", "empty"]
+    end
+
+    test "returns only dirs smaller than max_size" do
+      assert %FileSystem.Dir{
+               name: "test_dir",
+               children: [
+                 %FileSystem.Dir{
+                   name: "a",
+                   children: [
+                     %FileSystem.File{name: "f", size: 29_116}
+                   ]
+                 },
+                 %FileSystem.File{name: "b.txt", size: 14_848_514},
+                 %FileSystem.Dir{
+                   name: "c",
+                   children: [
+                     %FileSystem.File{name: "huge", size: 1_000_000_000}
+                   ]
+                 },
+                 %FileSystem.Dir{name: "empty", children: []}
+               ]
+             }
+             |> FileSystem.filter_dir(max_size: 30_0000)
+             |> Enum.map(& &1.name) == ["a", "empty"]
+    end
+  end
 end

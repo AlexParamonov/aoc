@@ -20,12 +20,48 @@ defmodule ElixirApp.FileSystem do
     |> execute_instructions(current_dir)
   end
 
-  def filter_dir(_fs, max_size: _max_size) do
-    []
+  def filter_file(root) do
+    flatten(root)
+    |> Enum.filter(fn
+      %File{} -> true
+      _ -> false
+    end)
   end
 
-  def size(%Dir{children: _children}) do
-    0
+  def filter_dir(root) do
+    flatten(root)
+    |> Enum.filter(fn
+      %Dir{} -> true
+      _ -> false
+    end)
+  end
+
+  def filter_dir(root, max_size: max_size) do
+    filter_dir(root)
+    |> Enum.filter(fn dir -> size(dir) <= max_size end)
+  end
+
+  def filter_dir(root, min_size: min_size) do
+    filter_dir(root)
+    |> Enum.filter(fn dir -> size(dir) >= min_size end)
+  end
+
+  def flatten(root) do
+    root.children
+    |> Enum.map(fn child ->
+      case child do
+        %Dir{} -> [child, flatten(child)]
+        %File{} -> child
+      end
+    end)
+    |> List.flatten()
+  end
+
+  def size(%File{size: size}), do: size
+  def size(%Dir{children: children}) do
+    children
+    |> Enum.map(&size/1)
+    |> Enum.sum()
   end
 
   defp command?(line) do
@@ -55,9 +91,22 @@ defmodule ElixirApp.FileSystem do
     |> Map.get(:root)
   end
 
+  defp execute_instruction({:cd, "/"}, tree) do
+    dir = tree.root
+
+    Map.merge(tree, %{
+      current_dir: dir,
+      path: [dir.name]
+    })
+  end
+
   defp execute_instruction({:cd, ".."}, tree) do
     new_path = Enum.slice(tree.path, 0..-2)
     new_dir = find_dir(tree.root, at: new_path)
+
+    unless new_dir do
+      raise "no parent at #{Enum.join(new_path, "/")}"
+    end
 
     Map.merge(tree, %{
       current_dir: new_dir,
@@ -70,10 +119,14 @@ defmodule ElixirApp.FileSystem do
       current_dir.children
       |> Enum.find(fn child -> child.name == name end)
 
+    unless new_dir do
+      raise "no child #{name} at #{Enum.join(tree.path, "/")}"
+    end
+
     Map.merge(tree, %{
       current_dir: new_dir,
       # path: [new_dir.name | tree.path]
-      path: [tree.path] ++ [new_dir.name]
+      path: tree.path ++ [new_dir.name]
     })
   end
 
