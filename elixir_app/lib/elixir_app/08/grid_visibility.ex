@@ -49,13 +49,10 @@ defmodule ElixirApp.GridVisibility do
   end
 
   defp side_score(side, height) do
-    {visible, not_visible} = Enum.split_while(side, fn {tree_height, _, _} -> tree_height < height end)
-
-    Enum.count(visible) + edge_score(not_visible)
+    Enum.reduce_while(side, 0, fn {tree_height, _, _}, score ->
+      if tree_height >= height, do: {:halt, score + 1}, else: {:cont, score + 1}
+    end)
   end
-
-  defp edge_score([]), do: 0
-  defp edge_score(_), do: 1
 
   defp parse_grid(input) do
     input
