@@ -5,6 +5,58 @@ defmodule ElixirApp.GridVisibility do
     |> visible_tree_count
   end
 
+  def visibility_score(raw_input) do
+    raw_input
+    |> parse_grid
+    |> tree_visibility_scores
+    |> Enum.max
+  end
+
+  defp tree_visibility_scores(grid) do
+    grid
+    |> Enum.map(fn line ->
+      line
+      |> Enum.map(fn tree ->
+        tree_visibility_score(grid, tree)
+      end)
+    end)
+    |> List.flatten
+  end
+
+  defp tree_visibility_score(grid, {height, x, y}) do
+    line = Enum.at(grid, y)
+
+    horizontal_score =
+      split_tree_view(line, x)
+      |> Enum.reduce(1, fn side, score ->
+        score * side_score(side, height)
+      end)
+
+
+    col =
+      grid
+      |> Enum.zip()
+      |> Enum.map(&Tuple.to_list/1)
+      |> Enum.at(x)
+
+    vertiral_score =
+      split_tree_view(col, y)
+      |> Enum.reduce(1, fn side, score ->
+        score * side_score(side, height)
+      end)
+
+    horizontal_score * vertiral_score
+  end
+
+  defp side_score(side, height) do
+    {visible, not_visible} = Enum.split_while(side, fn {tree_height, _, _} -> tree_height < height end)
+
+    Enum.count(visible) + edge_score(not_visible)
+  end
+
+  defp edge_score([]), do: 0
+  defp edge_score(_), do: 1
+
   defp parse_grid(input) do
     input
     |> String.trim()
@@ -58,10 +110,7 @@ defmodule ElixirApp.GridVisibility do
   end
 
   defp visible_in_line?(line, {value, x, _y}) do
-    {left, right} = Enum.split(line, x)
-    right = Enum.slice(right, 1..-1)
-
-    [left, right]
+    split_tree_view(line, x)
     |> Enum.any?(fn side ->
       side
       |> Enum.map(&elem(&1, 0))
@@ -70,14 +119,18 @@ defmodule ElixirApp.GridVisibility do
   end
 
   defp visible_in_col?(line, {value, _x, y}) do
-    {left, right} = Enum.split(line, y)
-    right = Enum.slice(right, 1..-1)
-
-    [left, right]
+    split_tree_view(line, y)
     |> Enum.any?(fn side ->
       side
       |> Enum.map(&elem(&1, 0))
       |> Enum.max() < value
     end)
+  end
+
+  defp split_tree_view(line, index) do
+    {left, right} = Enum.split(line, index)
+    right = Enum.slice(right, 1..-1)
+    left = Enum.reverse(left)
+    [left, right]
   end
 end
