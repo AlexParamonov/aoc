@@ -8,17 +8,17 @@ defmodule ElixirApp.GridVisibility do
   def visibility_score(raw_input) do
     raw_input
     |> parse_grid
-    |> tree_visibility_scores
-    |> Enum.max()
+    |> best_tree_visibility_scores
   end
 
-  defp tree_visibility_scores(grid) do
+  defp best_tree_visibility_scores(grid) do
     Enum.map(grid, fn line ->
       Enum.map(line, fn tree ->
         tree_visibility_score(grid, tree)
       end)
+      |> Enum.max()
     end)
-    |> List.flatten()
+    |> Enum.max()
   end
 
   defp tree_visibility_score(grid, {height, x, y}) do
