@@ -12,18 +12,20 @@ defmodule ElixirApp.GridVisibility do
   end
 
   defp best_tree_visibility_scores(grid) do
+    transposed_grid = transpose(grid)
+
     Enum.map(grid, fn line ->
       Enum.map(line, fn tree ->
-        tree_visibility_score(grid, tree)
+        tree_visibility_score(grid, transposed_grid, tree)
       end)
       |> Enum.max()
     end)
     |> Enum.max()
   end
 
-  defp tree_visibility_score(grid, {height, x, y}) do
+  defp tree_visibility_score(grid, transposed_grid, {height, x, y}) do
     line = grid_line(grid, y)
-    col = grid_col(grid, x)
+    col = grid_line(transposed_grid, x)
 
     split_tree_view(line, x) ++ split_tree_view(col, y)
     |> Enum.reduce(1, fn side, score ->
@@ -118,12 +120,6 @@ defmodule ElixirApp.GridVisibility do
     grid
     |> Enum.zip()
     |> Enum.map(&Tuple.to_list/1)
-  end
-
-  defp grid_col(grid, x) do
-    grid
-    |> transpose()
-    |> Enum.at(x)
   end
 
   defp grid_line(grid, y) do
