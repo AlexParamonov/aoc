@@ -22,27 +22,13 @@ defmodule ElixirApp.GridVisibility do
   end
 
   defp tree_visibility_score(grid, {height, x, y}) do
-    line = Enum.at(grid, y)
+    line = grid_line(grid, y)
+    col = grid_col(grid, x)
 
-    horizontal_score =
-      split_tree_view(line, x)
-      |> Enum.reduce(1, fn side, score ->
-        score * side_score(side, height)
-      end)
-
-    col =
-      grid
-      |> Enum.zip()
-      |> Enum.map(&Tuple.to_list/1)
-      |> Enum.at(x)
-
-    vertiral_score =
-      split_tree_view(col, y)
-      |> Enum.reduce(1, fn side, score ->
-        score * side_score(side, height)
-      end)
-
-    horizontal_score * vertiral_score
+    split_tree_view(line, x) ++ split_tree_view(col, y)
+    |> Enum.reduce(1, fn side, score ->
+      score * side_score(side, height)
+    end)
   end
 
   defp side_score(side, height) do
@@ -87,8 +73,7 @@ defmodule ElixirApp.GridVisibility do
 
   defp vertically_visible_trees(grid) do
     grid
-    |> Enum.zip()
-    |> Enum.map(&Tuple.to_list/1)
+    |> transpose()
     |> Enum.slice(1..-2)
     |> Enum.reduce([], fn line, visible_trees ->
       inner_trees = Enum.slice(line, 1..-2)
@@ -127,5 +112,22 @@ defmodule ElixirApp.GridVisibility do
     right = Enum.slice(right, 1..-1)
 
     [left, right]
+  end
+
+  defp transpose(grid) do
+    grid
+    |> Enum.zip()
+    |> Enum.map(&Tuple.to_list/1)
+  end
+
+  defp grid_col(grid, x) do
+    grid
+    |> transpose()
+    |> Enum.at(x)
+  end
+
+  defp grid_line(grid, y) do
+    grid
+    |> Enum.at(y)
   end
 end
