@@ -9,18 +9,16 @@ defmodule ElixirApp.GridVisibility do
     raw_input
     |> parse_grid
     |> tree_visibility_scores
-    |> Enum.max
+    |> Enum.max()
   end
 
   defp tree_visibility_scores(grid) do
-    grid
-    |> Enum.map(fn line ->
-      line
-      |> Enum.map(fn tree ->
+    Enum.map(grid, fn line ->
+      Enum.map(line, fn tree ->
         tree_visibility_score(grid, tree)
       end)
     end)
-    |> List.flatten
+    |> List.flatten()
   end
 
   defp tree_visibility_score(grid, {height, x, y}) do
@@ -31,7 +29,6 @@ defmodule ElixirApp.GridVisibility do
       |> Enum.reduce(1, fn side, score ->
         score * side_score(side, height)
       end)
-
 
     col =
       grid
@@ -126,8 +123,9 @@ defmodule ElixirApp.GridVisibility do
 
   defp split_tree_view(line, index) do
     {left, right} = Enum.split(line, index)
-    right = Enum.slice(right, 1..-1)
     left = Enum.reverse(left)
+    right = Enum.slice(right, 1..-1)
+
     [left, right]
   end
 end
