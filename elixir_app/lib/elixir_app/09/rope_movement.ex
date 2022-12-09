@@ -1,6 +1,6 @@
 defmodule ElixirApp.RopeMovement do
   def count_uniq_tail_positions(raw_head_movements, knots: knot_count) do
-    head = {10_000, 10_000}
+    head = {0, 0}
 
     head_path =
       raw_head_movements
