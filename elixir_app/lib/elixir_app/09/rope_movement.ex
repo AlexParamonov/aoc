@@ -18,15 +18,15 @@ defmodule ElixirApp.RopeMovement do
     raw_head_movements
     |> String.trim()
     |> String.split("\n")
-    |> Enum.reduce([head], fn raw_head_movement, head_path_list ->
-      current_head = List.last(head_path_list)
+    |> Enum.reduce([[head]], fn raw_head_movement, head_path_list ->
+      current_head = List.last(List.last(head_path_list))
 
       head_path_in_one_direction =
         raw_head_movement
         |> String.split()
         |> head_path(current_head)
 
-      head_path_list ++ head_path_in_one_direction
+      [head_path_list, head_path_in_one_direction]
     end)
     |> List.flatten()
   end
