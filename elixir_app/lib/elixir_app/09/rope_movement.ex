@@ -5,6 +5,14 @@ defmodule ElixirApp.RopeMovement do
     raw_head_movements
     |> parse_head_movements(head)
     |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
+    |> tail_path(head)
     |> Enum.uniq()
     |> Enum.count()
   end
