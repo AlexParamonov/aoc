@@ -11,7 +11,7 @@ defmodule ElixirApp.RopeMovementTest do
 
   describe ".count_uniq_tail_positions" do
     test "returns a number of uniq positions on a grid tail visited", %{raw_input: raw_input} do
-      assert RopeMovement.count_uniq_tail_positions(raw_input) == 13
+      assert RopeMovement.count_uniq_tail_positions(raw_input, knots: 1) == 13
     end
   end
 
@@ -56,7 +56,11 @@ defmodule ElixirApp.RopeMovementTest do
     end
 
     test "returns a number of uniq positions on a grid tail visited", %{raw_input: raw_input} do
-      assert RopeMovement.count_uniq_tail_positions(raw_input) == 6314
+      assert RopeMovement.count_uniq_tail_positions(raw_input, knots: 1) == 6314
+    end
+
+    test "returns a number of uniq positions on a grid 9th tail knot visited", %{raw_input: raw_input} do
+      assert RopeMovement.count_uniq_tail_positions(raw_input, knots: 9) == 2504
     end
   end
 end

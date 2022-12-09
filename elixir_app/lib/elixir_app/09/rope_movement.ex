@@ -1,18 +1,15 @@
 defmodule ElixirApp.RopeMovement do
-  def count_uniq_tail_positions(raw_head_movements) do
+  def count_uniq_tail_positions(raw_head_movements, knots: knot_count) do
     head = {10_000, 10_000}
 
-    raw_head_movements
-    |> parse_head_movements(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
-    |> tail_path(head)
+    head_path =
+      raw_head_movements
+      |> parse_head_movements(head)
+
+    1..knot_count
+    |> Enum.reduce(head_path, fn _, path ->
+      tail_path(path, head)
+    end)
     |> Enum.uniq()
     |> Enum.count()
   end
