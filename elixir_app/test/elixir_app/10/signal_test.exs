@@ -9,13 +9,13 @@ defmodule ElixirApp.SignalTest do
     %{raw_input: raw_input}
   end
 
-  describe ".sum_signal_on_milestones" do
+  describe ".sum_signal_on_cycles" do
     test "returns a number of uniq positions on a grid tail visited", %{raw_input: raw_input} do
-      assert Signal.sum_signal_on_milestones(raw_input, milestones: [20, 60, 100, 140, 180, 220]) == 13_140
+      assert Signal.sum_signal_on_cycles(raw_input, cycles: [20, 60, 100, 140, 180, 220]) == 13_140
     end
   end
 
-  describe "tail movement logic" do
+  describe "cycle test" do
     [
       {20, 21, 420},
       {60, 19, 1140},
@@ -24,9 +24,9 @@ defmodule ElixirApp.SignalTest do
       {180, 16, 2880},
       {220, 18, 3960},
     ]
-    |> Enum.each(fn {milestone, x, signal} ->
-      test "signal on milestone: #{milestone}", %{raw_input: raw_input} do
-        assert Signal.report_signal(raw_input, unquote(milestone)) == {unquote(milestone), unquote(x), unquote(signal)}
+    |> Enum.each(fn {cycle, x, signal} ->
+      test "signal on cycle: #{cycle}", %{raw_input: raw_input} do
+        assert Signal.report_signal(raw_input, unquote(cycle)) == {unquote(cycle), unquote(x), unquote(signal)}
       end
     end)
 
@@ -37,7 +37,14 @@ defmodule ElixirApp.SignalTest do
         addx 3
         addx -5
         """
-    assert Signal.milestones(raw_input) == [{0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 4}, {5, 4}]
+      assert Signal.cycles(raw_input) == [{0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 4}, {5, 4}]
+    end
+  end
+
+  describe "draw" do
+    test "draws a demo image", %{raw_input: raw_input} do
+      output = FileFixtures.content("10/demo_output.txt")
+      assert Signal.draw(raw_input) == String.trim(output)
     end
   end
 
@@ -48,7 +55,12 @@ defmodule ElixirApp.SignalTest do
     end
 
     test "returns a number of uniq positions on a grid tail visited", %{raw_input: raw_input} do
-      assert Signal.sum_signal_on_milestones(raw_input, milestones: [20, 60, 100, 140, 180, 220]) == 10_760
+      assert Signal.sum_signal_on_cycles(raw_input, cycles: [20, 60, 100, 140, 180, 220]) == 10_760
+    end
+
+    test "draws an image", %{raw_input: raw_input} do
+      output = FileFixtures.content("10/output.txt")
+      assert Signal.draw(raw_input) == String.trim(output)
     end
   end
 end
