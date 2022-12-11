@@ -186,7 +186,7 @@ defmodule ElixirApp.FileSystemTest do
                  %FileSystem.Dir{name: "empty", children: []}
                ]
              }
-             |> FileSystem.filter_dir(max_size: 30_0000)
+             |> FileSystem.filter_dir(max_size: 300_000)
              |> Enum.map(& &1.name) == ["a", "empty"]
     end
   end

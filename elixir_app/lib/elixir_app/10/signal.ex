@@ -3,8 +3,7 @@ defmodule ElixirApp.Signal do
     cycles(raw_input)
     |> Enum.slice(1..-1)
     |> Enum.chunk_every(40)
-    |> Enum.map(&draw_line/1)
-    |> Enum.join("\n")
+    |> Enum.map_join("\n", &draw_line/1)
   end
 
   def cycles(raw_input) do
@@ -70,8 +69,7 @@ defmodule ElixirApp.Signal do
 
   defp draw_line(cycles) do
     cycles
-    |> Enum.map(&draw_in_cycle/1)
-    |> Enum.join()
+    |> Enum.map_join(&draw_in_cycle/1)
   end
 
   defp draw_in_cycle({cycle, x}) do

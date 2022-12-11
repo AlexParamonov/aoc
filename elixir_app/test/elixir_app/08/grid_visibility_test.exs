@@ -78,7 +78,7 @@ defmodule ElixirApp.GridVisibilityTest do
     end
 
     test "calculates the visibility score", %{raw_input: raw_input} do
-      assert GridVisibility.visibility_score(raw_input) == 422059
+      assert GridVisibility.visibility_score(raw_input) == 422_059
     end
   end
 end
