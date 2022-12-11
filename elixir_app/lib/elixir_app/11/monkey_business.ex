@@ -12,13 +12,10 @@ defmodule ElixirApp.MonkeyBusiness do
   end
 
   def play(raw_input, rounds: rounds) do
-    monkeys =
-      load_monkeys(raw_input)
-      |> Map.new(fn monkey -> {monkey.id, monkey} end)
+    monkeys = load_monkeys(raw_input)
 
     1..rounds
-    |> Enum.reduce(monkeys, fn round, monkeys ->
-      Logger.debug("Round #{round}")
+    |> Enum.reduce(monkeys, fn _, monkeys ->
       play_round(monkeys)
     end)
   end
@@ -28,33 +25,15 @@ defmodule ElixirApp.MonkeyBusiness do
     |> String.trim()
     |> String.split("\n\n")
     |> Enum.map(&MonkeyLoader.load/1)
+    |> Map.new(fn monkey -> {monkey.id, monkey} end)
   end
 
   defp play_round(monkeys) do
-    Map.keys(monkeys)
-    |> Enum.reduce(monkeys, fn id, monkeys ->
-      {:ok, source_monkey} = Map.fetch(monkeys, id)
-      throw_to_another_monkey(source_monkey, id, monkeys)
-    end)
-  end
-
-  defp throw_to_another_monkey(source_monkey, id, monkeys) do
-    source_monkey.items
-    |> Enum.reduce(monkeys, fn _, monkeys ->
-      {:ok, source_monkey} = Map.fetch(monkeys, id)
-
-      Monkey.pick_item_and_destination(source_monkey)
-      |> take_turn(monkeys)
-    end)
-  end
-
-  defp take_turn(:skip, monkeys), do: monkeys
-  defp take_turn(%{item: item, destination: destination, monkey: source_monkey}, monkeys) do
-    {:ok, destination_monkey} = Map.fetch(monkeys, destination)
-    destination_monkey = Monkey.add_item(item, destination_monkey)
-
     monkeys
-    |> Map.put(source_monkey.id, source_monkey)
-    |> Map.put(destination_monkey.id, destination_monkey)
+    # monkeys map is recreated on every iteration - cant use the original map
+    |> Enum.reduce(monkeys, fn {source_id, _}, monkeys ->
+      Map.fetch!(monkeys, source_id)
+      |> Monkey.throw_all_items(monkeys)
+    end)
   end
 end

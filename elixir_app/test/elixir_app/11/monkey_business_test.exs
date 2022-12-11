@@ -95,7 +95,7 @@ defmodule ElixirApp.MonkeyBusinessTest do
     end
 
     test "calculates the monkey_business_level after 20 rounds", %{raw_input: raw_input} do
-      assert MonkeyBusiness.calculate_level(raw_input, rounds: 20) == 10_605
+      assert MonkeyBusiness.calculate_level(raw_input, rounds: 20) == 56_595
     end
 
     @tag timeout: :infinity
