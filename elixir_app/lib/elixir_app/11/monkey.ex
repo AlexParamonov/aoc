@@ -2,10 +2,10 @@ defmodule ElixirApp.Monkey do
   defstruct [:id, :items, :operation_fn, :condition_fn, :inspect_count]
   require Logger
 
-  def throw_all_items(monkey, monkeys) do
+  def throw_all_items(monkey, monkeys, stress_fn) do
     monkey.items
     |> Enum.reduce(monkeys, fn item, monkeys ->
-      tampered_item = play_with_item(item, monkey)
+      tampered_item = play_with_item(item, monkey, stress_fn)
       destination_id = pick_destination(tampered_item, monkey)
 
       monkeys
@@ -30,14 +30,9 @@ defmodule ElixirApp.Monkey do
     monkey.condition_fn.(item)
   end
 
-  defp play_with_item(item, monkey) do
+  defp play_with_item(item, monkey, stress_fn) do
     item
     |> monkey.operation_fn.()
-    |> cool_down()
-  end
-
-  defp cool_down(item) do
-    (item / 3)
-    |> floor()
+    |> stress_fn.()
   end
 end

@@ -24,14 +24,17 @@ defmodule ElixirApp.MonkeyBusinessTest do
                  assert_fields(monkey, %{
                    items: [20, 23, 27, 26]
                  })
+
                {1, monkey} ->
                  assert_fields(monkey, %{
                    items: [2080, 25, 167, 207, 401, 1046]
                  })
+
                {2, monkey} ->
                  assert_fields(monkey, %{
                    items: []
                  })
+
                {3, monkey} ->
                  assert_fields(monkey, %{
                    items: []
@@ -46,14 +49,17 @@ defmodule ElixirApp.MonkeyBusinessTest do
                  assert_fields(monkey, %{
                    items: [51, 126, 20, 26, 136]
                  })
+
                {1, monkey} ->
                  assert_fields(monkey, %{
                    items: [343, 26, 30, 1546, 36]
                  })
+
                {2, monkey} ->
                  assert_fields(monkey, %{
                    items: []
                  })
+
                {3, monkey} ->
                  assert_fields(monkey, %{
                    items: []
@@ -69,16 +75,19 @@ defmodule ElixirApp.MonkeyBusinessTest do
                    items: [10, 12, 14, 26, 34],
                    inspect_count: 101
                  })
+
                {1, monkey} ->
                  assert_fields(monkey, %{
                    items: [245, 93, 53, 199, 115],
                    inspect_count: 95
                  })
+
                {2, monkey} ->
                  assert_fields(monkey, %{
                    items: [],
                    inspect_count: 7
                  })
+
                {3, monkey} ->
                  assert_fields(monkey, %{
                    items: [],
@@ -100,8 +109,7 @@ defmodule ElixirApp.MonkeyBusinessTest do
 
     @tag timeout: :infinity
     test "calculates the monkey_business_level after 10_000 rounds", %{raw_input: raw_input} do
-      assert MonkeyBusiness.calculate_level(raw_input, rounds: 10_000) == 10_605
+      assert MonkeyBusiness.calculate_level(raw_input, rounds: 10_000) == 15_693_274_740
     end
   end
-
 end
