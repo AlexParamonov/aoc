@@ -7,6 +7,37 @@ defmodule ElixirApp.SignalValidator do
     |> Enum.sum()
   end
 
+  def load(raw_input) do
+    raw_input
+    |> String.trim()
+    |> String.replace("\n\n", "\n")
+    |> String.split("\n")
+    |> Enum.map(&load_signal/1)
+  end
+
+  def sort(raw_input) do
+    raw_input
+    |> load
+    |> inject_signals([[[2]], [[6]]])
+    |> Enum.sort(&valid_signal?/2)
+  end
+
+  def decoder_key(raw_input) do
+    list = sort(raw_input)
+
+    find_decoder_key_index(list, [[2]]) * find_decoder_key_index(list, [[6]])
+  end
+
+  defp find_decoder_key_index(list, signal) do
+    list
+    |> Enum.find_index(&(&1 == signal))
+    |> Kernel.+(1)
+  end
+
+  defp inject_signals(signals, extra_signals) do
+    signals ++ extra_signals
+  end
+
   defp filter_valid_signals(signals) do
     signals
     |> Enum.filter(fn {_id, {signal1, signal2}} -> valid_signal?(signal1, signal2) end)
@@ -41,11 +72,13 @@ defmodule ElixirApp.SignalValidator do
   defp parse_signals(raw_signal) do
     raw_signal
     |> String.split("\n")
-    |> Enum.map(fn raw_signal ->
-      raw_signal
-      |> Code.eval_string()
-      |> elem(0)
-    end)
+    |> Enum.map(&load_signal/1)
     |> List.to_tuple()
+  end
+
+  defp load_signal(raw_signal) do
+    raw_signal
+    |> Code.eval_string()
+    |> elem(0)
   end
 end
