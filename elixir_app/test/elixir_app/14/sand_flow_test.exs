@@ -16,6 +16,12 @@ defmodule ElixirApp.SandFlowTest do
     end
   end
 
+  describe ".sand_units_in_cave_with_bottom_count" do
+    test "returns the sum of sand units stuck in a cave with bottom", %{raw_input: raw_input} do
+      assert SandFlow.sand_units_in_cave_with_bottom_count(raw_input) == 93
+    end
+  end
+
   describe ".build_cave" do
     test "builds an example cave", %{raw_input: raw_input} do
       cave = [
@@ -52,7 +58,12 @@ defmodule ElixirApp.SandFlowTest do
     end
 
     test "returns the sum of sand units stuck in a cave", %{raw_input: raw_input} do
-      assert SandFlow.sand_units_in_cave_count(raw_input) == 24
+      assert SandFlow.sand_units_in_cave_count(raw_input) == 913
+    end
+
+    @tag timeout: :infinity
+    test "returns the sum of sand units stuck in a cave with bottom", %{raw_input: raw_input} do
+      assert SandFlow.sand_units_in_cave_with_bottom_count(raw_input) == 30_762
     end
   end
 end
