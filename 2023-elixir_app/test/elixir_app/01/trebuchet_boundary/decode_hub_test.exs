@@ -1,5 +1,5 @@
 defmodule ElixirApp.TrebuchetBoundary.DecodeHubTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   alias ElixirApp.TrebuchetBoundary.DecodeHub
 

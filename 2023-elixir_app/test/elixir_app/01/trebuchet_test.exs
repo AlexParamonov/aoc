@@ -5,19 +5,21 @@ defmodule ElixirApp.TrebuchetTest do
   alias ElixirApp.TrebuchetBoundary.DecodeHub
   alias ElixirApp.FileFixtures
 
-  setup_all do
+  setup do
     {:ok, _pid} = start_supervised(DecodeHub)
-    :ok
+    %{decoder: DecodeHub}
   end
 
   describe ".calibration_checksum" do
-    setup do
+    setup context do
       raw_input = FileFixtures.content("01/demo_trebuchet.txt")
-      %{raw_input: raw_input}
+
+      context
+      |> Map.put(:raw_input, raw_input)
     end
 
-    test "returns a sum of all calibration values", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum(raw_input) == 142
+    test "returns a sum of all calibration values", %{raw_input: raw_input, decoder: decoder} do
+      assert Trebuchet.calibration_checksum(raw_input, decoder) == 142
     end
   end
 
@@ -27,23 +29,25 @@ defmodule ElixirApp.TrebuchetTest do
       %{raw_input: raw_input}
     end
 
-    test "returns a sum of all calibration values", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum_with_words(raw_input) == 281
+    test "returns a sum of all calibration values", %{raw_input: raw_input, decoder: decoder} do
+      assert Trebuchet.calibration_checksum_with_words(raw_input, decoder) == 281
     end
   end
 
   describe "result" do
-    setup do
+    setup context do
       raw_input = FileFixtures.content("01/trebuchet.txt")
-      %{raw_input: raw_input}
+
+      context
+      |> Map.put(:raw_input, raw_input)
     end
 
-    test "returns a sum of all calibration values", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum(raw_input) == 55_017
+    test "returns a sum of all calibration values", %{raw_input: raw_input, decoder: decoder} do
+      assert Trebuchet.calibration_checksum(raw_input, decoder) == 55_017
     end
 
-    test "returns a sum of all calibration values using words", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53_539
+    test "returns a sum of all calibration values using words", %{raw_input: raw_input, decoder: decoder} do
+      assert Trebuchet.calibration_checksum_with_words(raw_input, decoder) == 53_539
     end
   end
 end
