@@ -1,16 +1,8 @@
-defmodule ElixirApp.TrebuchetCore.Calibrator do
+defmodule ElixirApp.TrebuchetCore.UniversalDecoder do
   @word_regex "one|two|three|four|five|six|seven|eight|nine"
 
-  @spec calibrate(String.t) :: integer
-  def calibrate(line) do
-    Regex.scan(~r/\d/, line, trim: true)
-    |> List.flatten
-    |> extract_numbers
-    |> String.to_integer
-  end
-
-  @spec calibrate_with_words(String.t) :: integer
-  def calibrate_with_words(line) do
+  @spec decode(String.t) :: integer
+  def decode(line) do
     [
       find_first_match(line),
       find_last_match(line)
@@ -43,9 +35,5 @@ defmodule ElixirApp.TrebuchetCore.Calibrator do
       "nine" -> "9"
       _ -> word
     end
-  end
-
-  defp extract_numbers(list) do
-    List.first(list) <> List.last(list)
   end
 end
