@@ -8,19 +8,18 @@ defmodule ElixirApp.TrebuchetBoundary.DecodeHub do
   # Public API
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
-  def start_link(opts \\ []) do
-    name = opts[:name] || __MODULE__
-    GenServer.start_link(__MODULE__, 0, name: name)
+  def start_link(_opts \\ []) do
+    GenServer.start_link(__MODULE__, 0, name: __MODULE__)
   end
 
-  @spec decode_words_and_numbers(GenServer.name(), String.t()) :: non_neg_integer()
-  def decode_words_and_numbers(server \\ __MODULE__, encoded_value) do
-    GenServer.call(server, {:decode_words_and_numbers, encoded_value})
+  @spec decode_words_and_numbers(String.t()) :: non_neg_integer()
+  def decode_words_and_numbers(encoded_value) do
+    GenServer.call(__MODULE__, {:decode_words_and_numbers, encoded_value})
   end
 
-  @spec decode_numbers(GenServer.name(), String.t()) :: non_neg_integer()
-  def decode_numbers(server \\ __MODULE__, encoded_value) do
-    GenServer.call(server, {:decode_numbers, encoded_value})
+  @spec decode_numbers(String.t()) :: non_neg_integer()
+  def decode_numbers(encoded_value) do
+    GenServer.call(__MODULE__, {:decode_numbers, encoded_value})
   end
 
   # Private API
