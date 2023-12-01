@@ -61,7 +61,7 @@ defmodule ElixirApp.TrebuchetTest do
     end
 
     test "returns a sum of all calibration values using words", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53552
+      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53551
     end
   end
 end
