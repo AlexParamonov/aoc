@@ -37,6 +37,11 @@ defmodule ElixirApp.TrebuchetTest do
       line = "one7one"
       assert Trebuchet.calibrate_with_words(line) == 11
     end
+
+    test "works with overlapping text" do
+      line = "mjlrpthgvz57skzbs24fourtwoneklr"
+      assert Trebuchet.calibrate_with_words(line) == 51
+    end
   end
 
   describe ".calibration_checksum_with_words" do
@@ -57,11 +62,11 @@ defmodule ElixirApp.TrebuchetTest do
     end
 
     test "returns a sum of all calibration values", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum(raw_input) == 55017
+      assert Trebuchet.calibration_checksum(raw_input) == 55_017
     end
 
     test "returns a sum of all calibration values using words", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53551
+      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53_539
     end
   end
 end

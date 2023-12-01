@@ -5,7 +5,6 @@ defmodule ElixirApp.Trebuchet do
     raw_input
     |> parse_list
     |> Enum.map(&calibrate_with_words/1)
-    # |> Enum.map(& if &1 > 99, do: dbg(&1), else: &1)
     |> Enum.sum()
   end
 
@@ -25,11 +24,24 @@ defmodule ElixirApp.Trebuchet do
   end
 
   def calibrate_with_words(line) do
-    Regex.scan(~r/#{@word_regex}|\d/, line)
-    |> List.flatten
+    [
+      find_first_match(line),
+      find_last_match(line)
+    ]
     |> Enum.map(&word_to_number/1)
     |> extract_numbers
     |> String.to_integer
+  end
+
+  defp find_first_match(line) do
+    Regex.run(~r/#{@word_regex}|\d/, line)
+    |> List.first
+  end
+
+  defp find_last_match(line) do
+    Regex.run(~r/#{String.reverse(@word_regex)}|\d/, String.reverse(line))
+    |> List.first
+    |> String.reverse
   end
 
   defp word_to_number(word) do
