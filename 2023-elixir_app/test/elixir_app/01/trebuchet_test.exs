@@ -2,7 +2,13 @@ defmodule ElixirApp.TrebuchetTest do
   use ExUnit.Case, async: true
 
   alias ElixirApp.Trebuchet
+  alias ElixirApp.TrebuchetBoundary.DecodeHub
   alias ElixirApp.FileFixtures
+
+  setup_all do
+    {:ok, _pid} = start_supervised(DecodeHub)
+    :ok
+  end
 
   describe ".calibration_checksum" do
     setup do

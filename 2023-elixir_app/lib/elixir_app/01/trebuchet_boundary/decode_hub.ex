@@ -22,6 +22,10 @@ defmodule ElixirApp.TrebuchetBoundary.DecodeHub do
     GenServer.call(__MODULE__, {:decode_numbers, encoded_value})
   end
 
+  def decode_operations_count() do
+    GenServer.call(__MODULE__, :decode_operations_count)
+  end
+
   # Private API
 
   @spec init(non_neg_integer()) :: {:ok, state}
@@ -47,5 +51,9 @@ defmodule ElixirApp.TrebuchetBoundary.DecodeHub do
       UniversalDecoder.decode(encoded_value),
       count + 1
     }
+  end
+
+  def handle_call(:decode_operations_count, _from, count) do
+    {:reply, count, count}
   end
 end
