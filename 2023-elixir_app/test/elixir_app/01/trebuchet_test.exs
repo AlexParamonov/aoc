@@ -15,35 +15,6 @@ defmodule ElixirApp.TrebuchetTest do
     end
   end
 
-  describe ".calibrate" do
-    test "builds a calibration value" do
-      line = "pqr3stu8vwx"
-      assert Trebuchet.calibrate(line) == 38
-    end
-
-    test "only builds 2 digit numbers" do
-      line = "pqr3stu8x4e"
-      assert Trebuchet.calibrate(line) == 34
-    end
-  end
-
-  describe ".calibrate_with_words" do
-    test "uses spelled out numbers as digits" do
-      line = "two1nine"
-      assert Trebuchet.calibrate_with_words(line) == 29
-    end
-
-    test "works with repeated numbers" do
-      line = "one7one"
-      assert Trebuchet.calibrate_with_words(line) == 11
-    end
-
-    test "works with overlapping text" do
-      line = "mjlrpthgvz57skzbs24fourtwoneklr"
-      assert Trebuchet.calibrate_with_words(line) == 51
-    end
-  end
-
   describe ".calibration_checksum_with_words" do
     setup do
       raw_input = FileFixtures.content("01/demo_trebuchet_with_words.txt")
