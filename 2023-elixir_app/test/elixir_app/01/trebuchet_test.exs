@@ -4,12 +4,12 @@ defmodule ElixirApp.TrebuchetTest do
   alias ElixirApp.Trebuchet
   alias ElixirApp.FileFixtures
 
-  setup_all do
-    raw_input = FileFixtures.content("01/demo_trebuchet.txt")
-    %{raw_input: raw_input}
-  end
-
   describe ".calibration_checksum" do
+    setup do
+      raw_input = FileFixtures.content("01/demo_trebuchet.txt")
+      %{raw_input: raw_input}
+    end
+
     test "returns a sum of all calibration values", %{raw_input: raw_input} do
       assert Trebuchet.calibration_checksum(raw_input) == 142
     end
@@ -27,6 +27,29 @@ defmodule ElixirApp.TrebuchetTest do
     end
   end
 
+  describe ".calibrate_with_words" do
+    test "uses spelled out numbers as digits" do
+      line = "two1nine"
+      assert Trebuchet.calibrate_with_words(line) == 29
+    end
+
+    test "works with repeated numbers" do
+      line = "one7one"
+      assert Trebuchet.calibrate_with_words(line) == 11
+    end
+  end
+
+  describe ".calibration_checksum_with_words" do
+    setup do
+      raw_input = FileFixtures.content("01/demo_trebuchet_with_words.txt")
+      %{raw_input: raw_input}
+    end
+
+    test "returns a sum of all calibration values", %{raw_input: raw_input} do
+      assert Trebuchet.calibration_checksum_with_words(raw_input) == 281
+    end
+  end
+
   describe "result" do
     setup do
       raw_input = FileFixtures.content("01/trebuchet.txt")
@@ -34,7 +57,11 @@ defmodule ElixirApp.TrebuchetTest do
     end
 
     test "returns a sum of all calibration values", %{raw_input: raw_input} do
-      assert Trebuchet.calibration_checksum(raw_input) == 142
+      assert Trebuchet.calibration_checksum(raw_input) == 55017
+    end
+
+    test "returns a sum of all calibration values using words", %{raw_input: raw_input} do
+      assert Trebuchet.calibration_checksum_with_words(raw_input) == 53552
     end
   end
 end
