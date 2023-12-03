@@ -54,5 +54,9 @@ defmodule ElixirApp.EngineTest do
 
       %{raw_input: raw_input}
     end
+
+    test "returns a sum of parts numbers near symbol", %{raw_input: raw_input} do
+      assert 514_969 == Engine.sum_parts(raw_input)
+    end
   end
 end

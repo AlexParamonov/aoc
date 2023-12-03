@@ -7,12 +7,9 @@ defmodule ElixirApp.Engine do
       raw_input
       |> load_matrix
 
-    adjacent_positions =
-      matrix
-      |> build_adjacent_positions
-
     matrix
-    |> find_orphans(adjacent_positions)
+    |> build_adjacent_positions
+    |> load_numbers(matrix)
     |> Enum.sum()
   end
 
@@ -103,33 +100,32 @@ defmodule ElixirApp.Engine do
     shift_position_left(new_value, row_index, new_index, matrix)
   end
 
-  defp shift_position_left(value, row_index, index, matrix), do: {row_index, index + 1}
+  defp shift_position_left(_value, row_index, index, _matrix), do: {row_index, index + 1}
 
-  def find_orphans(matrix, adjacent_positions) do
-    matrix
-    |> numbers_positions
-    |> Enum.reject(fn {position, _length} ->
-      position in adjacent_positions
-    end)
-    |> Enum.map(fn {{row_index, index}, length} ->
+
+  def load_numbers(adjacent_positions, matrix) do
+    adjacent_positions
+    |> Enum.map(fn {row_index, index} ->
       matrix
       |> Enum.at(row_index)
-      |> Enum.slice(index, length)
-      |> Enum.join()
-      |> String.to_integer()
+      |> number_at_index(index)
     end)
   end
 
-  defp numbers_positions(matrix) do
-    matrix
-    |> Enum.with_index()
-    |> Enum.map(fn {row, row_index} ->
-      Regex.scan(~r/\d+/, Enum.join(row), return: :index)
-      |> List.flatten()
-      |> Enum.map(fn {index, length} ->
-        {{row_index, index}, length}
-      end)
-    end)
-    |> List.flatten()
+  defp number_at_index(line, index) do
+    value = Enum.at(line, index)
+    number_at_index(value, line, index, "")
+  end
+
+  defp number_at_index(value, line, index, acc) when value in @numbers do
+    new_index = index + 1
+    new_value = Enum.at(line, new_index)
+
+    number_at_index(new_value, line, new_index, acc <> value)
+  end
+
+  defp number_at_index(_value, _line, _index, acc) do
+    acc
+    |> String.to_integer()
   end
 end
