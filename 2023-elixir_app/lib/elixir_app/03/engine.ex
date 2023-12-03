@@ -13,6 +13,48 @@ defmodule ElixirApp.Engine do
     |> Enum.sum()
   end
 
+  def sum_gears(raw_input) do
+    matrix =
+      raw_input
+      |> load_matrix
+
+    matrix
+    |> build_gear_parts_positions
+    |> Enum.reject(& Enum.count(&1) < 2)
+    |> Enum.reduce(0, fn positions, acc ->
+      acc + Enum.reduce(load_numbers(positions, matrix), 1 , &Kernel.*(&1, &2))
+    end)
+  end
+
+  defp build_gear_parts_positions(matrix) do
+    matrix
+    |> find_gear_positions()
+    |> Enum.map(fn position ->
+      [position]
+      |> expand_positions()
+      |> filter_empty_positions(matrix)
+      |> adjust_for_starting_position(matrix)
+      |> Enum.uniq()
+    end)
+  end
+
+  defp find_gear_positions(matrix) do
+    matrix
+    |> Enum.with_index()
+    |> Enum.reduce([], fn {row, row_index}, acc ->
+      row
+      |> Enum.with_index()
+      |> Enum.reduce([], fn
+        {value, index}, row_acc when value == "*" ->
+          [{row_index, index} | row_acc]
+
+        {_value, _index}, row_acc ->
+          row_acc
+      end)
+      |> Kernel.++(acc)
+    end)
+  end
+
   def load_matrix(raw_input) do
     raw_input
     |> String.split("\n", trim: true)
