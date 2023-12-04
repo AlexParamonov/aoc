@@ -16,6 +16,12 @@ defmodule ElixirApp.ScratchCardsTest do
     end
   end
 
+  describe ".sum_cards" do
+    test "returns a total sum of scratchcards after duplication", %{raw_input: raw_input} do
+      assert 30 == ScratchCards.sum_cards(raw_input)
+    end
+  end
+
   describe "result" do
     setup do
       raw_input = FileFixtures.content("04/cards.txt")
@@ -24,7 +30,11 @@ defmodule ElixirApp.ScratchCardsTest do
     end
 
     test "returns a sum of winning points on all cards", %{raw_input: raw_input} do
-      assert 17803 == ScratchCards.sum_points(raw_input)
+      assert 17_803 == ScratchCards.sum_points(raw_input)
+    end
+
+    test "returns a total sum of scratchcards after duplication", %{raw_input: raw_input} do
+      assert 5_554_894 == ScratchCards.sum_cards(raw_input)
     end
   end
 end
