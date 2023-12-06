@@ -26,7 +26,7 @@ defmodule ElixirApp.MixProject do
   defp deps do
     [
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      # {:math, "~> 0.7.0"},
+      {:math, "~> 0.7.0"},
       # {:libgraph, "~> 0.14"},
       {:flow_assertions, "~> 0.7", only: :test},
       # {:dep_from_hexpm, "~> 0.3.0"},
