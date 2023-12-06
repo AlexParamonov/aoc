@@ -17,6 +17,12 @@ defmodule ElixirApp.RaceTest do
     end
   end
 
+  describe ".ways_to_win_long_race_power" do
+    test "returns the multiplication of ways to win long race", %{raw_input: raw_input} do
+      assert 71_503 == Race.ways_to_win_long_race_power(raw_input)
+    end
+  end
+
   describe ".ways_to_win" do
     test "returns a number of ways to win a game" do
       assert 4 == Race.ways_to_win({7, 9})
@@ -34,6 +40,10 @@ defmodule ElixirApp.RaceTest do
 
     test "returns the multiplication of ways to win all races", %{raw_input: raw_input} do
       assert 227_850 == Race.ways_to_win_power(raw_input)
+    end
+
+    test "returns the multiplication of ways to win long race", %{raw_input: raw_input} do
+      assert 71_503 == Race.ways_to_win_long_race_power(raw_input)
     end
   end
 end

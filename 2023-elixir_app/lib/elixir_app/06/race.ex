@@ -7,6 +7,13 @@ defmodule ElixirApp.Race do
     |> Enum.reduce(&Kernel.*/2)
   end
 
+  def ways_to_win_long_race_power(raw_input) do
+    raw_input
+    |> parse_list(delimeter: "\n")
+    |> load_long_table
+    |> ways_to_win()
+  end
+
   def ways_to_win({target_time, target_distance}) do
     calculate_edge({target_time, target_distance})
     |> count_ways_to_win
@@ -40,6 +47,20 @@ defmodule ElixirApp.Race do
     raw_input
     |> Enum.map(&load_map/1)
     |> Enum.zip
+  end
+
+  defp load_long_table(raw_input) do
+    raw_input
+    |> Enum.map(&load_long_map/1)
+    |> List.to_tuple
+  end
+
+  defp load_long_map(raw_line) do
+    raw_line
+    |> parse_list(delimeter: " ")
+    |> Enum.slice(1..-1)
+    |> Enum.join("")
+    |> String.to_integer
   end
 
   defp load_map(raw_line) do
